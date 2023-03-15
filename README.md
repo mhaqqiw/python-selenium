@@ -42,4 +42,4 @@ https://www.online-calculator.com/full-screen-calculator/
 - Browser Selection
     - Will add another browser and can run headless
 - Dockerization
-    - Will Dockerfile to make easier to run with Docker
+    - Will add Dockerfile to make easier to run with Docker
