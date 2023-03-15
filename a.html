@@ -1,0 +1,137 @@
+<html>
+
+<head>
+    <style>
+        #container {
+            width: 590.496px;
+            height: 763px;
+            background: green;
+            user-drag: none;
+            -webkit-user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .container {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img id="container" onmousemove="showCoords(event)" src="calc.png" onclick="clickBtn()" />
+        <div style="margin-left:25px">
+            <div id="coor"></div>
+            <div id="list" style="margin-top: 100px;">
+            </div>
+            <div id="points" style="display: none;margin-top: 25px;">
+                <div style="display: flex;">
+                    <div id="point_1"></div>
+                    <div id="point_2"></div>
+                </div>
+                <div style="display: flex;">
+                    <div id="point_3"></div>
+                    <div id="point_4"></div>
+                </div>
+            </div>
+            <div id="center"></div>
+            <div id="save_cont" style="display: none;">
+                <div>Name: </div>
+                <input id="save_data" style="margin-left: 25px;">
+                <button style="margin-left: 25px;" onclick="savedDate()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var savedData = [];
+        var x, y, center_x, center_y, point_1, point_2, point_3, point_4;
+        var arr = [];
+        var coor_text = document.getElementById("coor");
+        var list = document.getElementById("list");
+        var detail = document.getElementById("points");
+        var center = document.getElementById("center");
+        var save_cont = document.getElementById("save_cont");
+
+        function showCoords(event) {
+            this.x = event.offsetX
+            this.y = event.offsetY
+            var text = "X: " + x + " Y: " + y
+            coor_text.innerHTML = text
+        }
+        function clickBtn() {
+            var size = arr.length;
+            if (size < 2) {
+                switch (size) {
+                    case 0:
+                        var data = { "x": x, "y": y, "state": "initial" }
+                        arr.push(data)
+                        generate(data, arr)
+                        break;
+                    case 1:
+                        var data = { "x": x, "y": y, "state": "end" }
+                        arr.push(data)
+                        generate(data, arr)
+                        break;
+                    default:
+                        alert("error coy")
+                }
+            }
+        }
+
+        function clickDel(event){
+            console.log(event)
+        }
+
+        function generate(data, arr){
+            var size = arr.length
+            var ind = document.createElement("div");
+            ind.innerHTML = `<div data="${size - 1}" style="display: flex;margin-top:5px"><div>X: ${data.x}, Y: ${data.y}, State: ${data.state}</div><button onclick="clickDel(event)" style="margin-left: 25px;">X</button></div>`
+            list.appendChild(ind)
+            if(size == 2){
+                calculate(arr)
+                detail.style.display = "block";
+                save_cont.style.display = "flex";
+            }
+        }
+
+        function savedDate(){
+            var val = document.getElementById("save_data");
+            if(val.value == "" || val.value == undefined){
+                alert("Please Insert Name");
+                return 0;
+            } 
+            savedData.push({
+                "name": "",
+                "point_1": point_1,
+                "point_2": point_2,
+                "point_3": point_3,
+                "point_4": point_4,
+                "center_x": center_x,
+                "center_y": center_y,
+            })
+        }
+
+        function calculate(arr){
+            point_1 = {"x": arr[0].x, "y": arr[0].y};
+            point_2 = {"x": arr[1].x, "y": arr[0].y};
+            point_3 = {"x": arr[0].x, "y": arr[1].y};
+            point_4 = {"x": arr[1].x, "y": arr[1].y};
+
+            center_x = arr[0].x + ((arr[1].x - arr[0].x) / 2);
+            center_y = arr[0].y + ((arr[1].y - arr[0].y) / 2);
+
+            document.getElementById("point_1").innerHTML = "X: "+point_1.x+", Y: "+point_1.y;
+            document.getElementById("point_2").innerHTML = "X: "+point_2.x+", Y: "+point_2.y;
+            document.getElementById("point_3").innerHTML = "X: "+point_3.x+", Y: "+point_3.y;
+            document.getElementById("point_4").innerHTML = "X: "+point_4.x+", Y: "+point_4.y;
+
+            center.innerHTML = "Center X: "+center_x+", Center Y: "+center_y;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+selenium
+Pillow
+opencv-python
+pytesseract
